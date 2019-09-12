@@ -18,6 +18,8 @@ class System {
   std::string Kernel();               // TODO: See src/system.cpp
   std::string OperatingSystem();      // TODO: See src/system.cpp
 
+  std::string OS, kernel;             // variables to store OS & kernel strings
+
   // TODO: Define any necessary private members
  private:
   Processor cpu_ = {};
