@@ -116,8 +116,11 @@ long LinuxParser::ActiveJiffies() {
           stol(time[CPUStates::kSoftIRQ_]) + stol(time[CPUStates::kSteal_]));
 }
 
-// TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+// Read and return the number of idle jiffies for the system
+long LinuxParser::IdleJiffies() {
+  vector<string> time = CpuUtilization();
+  return (stol(time[CPUStates::kIdle_]) + stol(time[CPUStates::kIOwait_]));
+}
 
 // Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() {
