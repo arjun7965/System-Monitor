@@ -21,8 +21,14 @@ float Process::CpuUtilization() const {
   return cpu_usageProcess;
 }
 
-// TODO: Return this process's CPU utilization
-void Process::CpuUtilization(long active_ticks, long system_ticks) { }
+// Calculate this process's CPU utilization
+void Process::CpuUtilization(long active_ticks, long system_ticks) {
+  long a_ticks = active_ticks - cached_active_ticks;
+  long s_ticks = system_ticks - cached_system_ticks;
+  cpu_usageProcess = (float) a_ticks / (float) s_ticks;
+  cached_active_ticks = active_ticks;
+  cached_system_ticks = system_ticks;
+}
 
 // Return the command that generated this process
 string Process::Command() {
