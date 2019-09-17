@@ -14,7 +14,7 @@ using std::vector;
 int Process::Pid() { return 0; }
 
 // Return the process's CPU utilization
-float Process::CpuUtilization() {
+float Process::CpuUtilization() const {
   return cpu_usageProcess;
 }
 
@@ -33,6 +33,12 @@ string Process::User() { return string(); }
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { return 0; }
 
-// TODO: Overload the "less than" comparison operator for Process objects
-// REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a[[maybe_unused]]) const { return true; }
+// Overload the "less than" comparison operator for Process objects
+bool Process::operator<(Process const& a) const {
+  return CpuUtilization() < a.CpuUtilization();
+}
+
+// Overload the "great than" comparison operator for Process objects
+bool Process::operator>(Process const& a) const {
+  return CpuUtilization() > a.CpuUtilization();
+}
