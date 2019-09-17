@@ -10,6 +10,9 @@ using std::string;
 using std::to_string;
 using std::vector;
 
+//---------------*************************************************------------------------------
+// --------------Helper functions for System class starts from here------------------------------
+
 // Read and return the operating system name
 string LinuxParser::OperatingSystem() {
   string line;
@@ -101,64 +104,6 @@ long LinuxParser::UpTime() {
   return uptime;
 }
 
-// Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() {
-  return UpTime() * sysconf(_SC_CLK_TCK);
-}
-
-// Read and return the number of active jiffies for a PID
-long LinuxParser::ActiveJiffies(int pid) {
-  string line, token;
-  vector<string> values;
-  std::ifstream filestream(kProcDirectory + std::to_string(pid) + kStatFilename);
-  if (filestream.is_open()) {
-    std::getline(filestream, line);
-    std::istringstream stream(line);
-    while (stream >> token) {
-      values.push_back(token);
-    }
-  }
-  long utime = stol(values[13]);
-  long stime = stol(values[14]);
-  long cutime = stol(values[15]);
-  long cstime = stol(values[16]);
-  long starttime = stol(values[21]);
-  long total_time = utime + stime + cutime + cstime;
-  return total_time;
-}
-
-// Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() {
-  vector<string> time = CpuUtilization();
-  return (stol(time[CPUStates::kUser_]) + stol(time[CPUStates::kNice_]) +
-          stol(time[CPUStates::kSystem_]) + stol(time[CPUStates::kIRQ_]) +
-          stol(time[CPUStates::kSoftIRQ_]) + stol(time[CPUStates::kSteal_]));
-}
-
-// Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() {
-  vector<string> time = CpuUtilization();
-  return (stol(time[CPUStates::kIdle_]) + stol(time[CPUStates::kIOwait_]));
-}
-
-// Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() {
-  vector<string> utilization;
-  string line, value;
-  std::ifstream filestream(kProcDirectory + kStatFilename);
-  if (filestream.is_open()) {
-    std::getline(filestream, line);
-    std::istringstream stream(line);
-    if (stream >> value) {
-      if (value == "cpu") {
-        while (stream >> value)
-          utilization.push_back(value);
-      }
-    }
-  }
-  return utilization;
-}
-
 // Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
   int numProcesses;
@@ -193,6 +138,69 @@ int LinuxParser::RunningProcesses() {
     }
   }
   return runProcesses;
+}
+// Read and return the number of jiffies for the system
+long LinuxParser::Jiffies() {
+  return UpTime() * sysconf(_SC_CLK_TCK);
+}
+
+//---------------*************************************************-------------------------------
+// --------------Helper functions for Processor class starts from here------------------------------
+
+// Read and return the number of active jiffies for the system
+long LinuxParser::ActiveJiffies() {
+  vector<string> time = CpuUtilization();
+  return (stol(time[CPUStates::kUser_]) + stol(time[CPUStates::kNice_]) +
+          stol(time[CPUStates::kSystem_]) + stol(time[CPUStates::kIRQ_]) +
+          stol(time[CPUStates::kSoftIRQ_]) + stol(time[CPUStates::kSteal_]));
+}
+
+// Read and return the number of idle jiffies for the system
+long LinuxParser::IdleJiffies() {
+  vector<string> time = CpuUtilization();
+  return (stol(time[CPUStates::kIdle_]) + stol(time[CPUStates::kIOwait_]));
+}
+
+// Read and return CPU utilization
+vector<string> LinuxParser::CpuUtilization() {
+  vector<string> utilization;
+  string line, value;
+  std::ifstream filestream(kProcDirectory + kStatFilename);
+  if (filestream.is_open()) {
+    std::getline(filestream, line);
+    std::istringstream stream(line);
+    if (stream >> value) {
+      if (value == "cpu") {
+        while (stream >> value)
+          utilization.push_back(value);
+      }
+    }
+  }
+  return utilization;
+}
+
+//---------------*************************************************------------------------------
+// --------------Helper functions for Process class starts from here------------------------------
+
+// Read and return the number of active jiffies for a PID
+long LinuxParser::ActiveJiffies(int pid) {
+  string line, token;
+  vector<string> values;
+  std::ifstream filestream(kProcDirectory + std::to_string(pid) + kStatFilename);
+  if (filestream.is_open()) {
+    std::getline(filestream, line);
+    std::istringstream stream(line);
+    while (stream >> token) {
+      values.push_back(token);
+    }
+  }
+  long utime = stol(values[13]);
+  long stime = stol(values[14]);
+  long cutime = stol(values[15]);
+  long cstime = stol(values[16]);
+  long starttime = stol(values[21]);
+  long total_time = utime + stime + cutime + cstime;
+  return total_time;
 }
 
 // Read and return the command associated with a process
