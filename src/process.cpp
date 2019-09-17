@@ -13,8 +13,13 @@ using std::vector;
 // TODO: Return this process's ID
 int Process::Pid() { return 0; }
 
+// Return the process's CPU utilization
+float Process::CpuUtilization() {
+  return cpu_usageProcess;
+}
+
 // TODO: Return this process's CPU utilization
-float Process::CpuUtilization() { return 0; }
+void Process::CpuUtilization(long active_ticks, long system_ticks) { }
 
 // TODO: Return the command that generated this process
 string Process::Command() { return string(); }
