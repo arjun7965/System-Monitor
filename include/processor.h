@@ -3,7 +3,7 @@
 
 class Processor {
  public:
-  float Utilization();
+  float Utilization();                  // Return the CPU utilization of the system
 
  private:
   long cached_active_time{0};

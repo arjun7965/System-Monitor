@@ -2,7 +2,7 @@
 #include "linux_parser.h"
 
 
-// Return the aggregate CPU utilization
+// Return the CPU utilization
 float Processor::Utilization() {
   float cpu_utilization;
   long active_time = LinuxParser::ActiveJiffies();
