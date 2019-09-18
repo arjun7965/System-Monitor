@@ -35,17 +35,17 @@ string Process::Command() {
   return LinuxParser::Command(Pid());
 }
 
-// TODO: Return this process's memory utilization
+// Return this process's memory utilization
 string Process::Ram() {
   return LinuxParser::Ram(Pid());
 }
 
-// TODO: Return the user (name) that generated this process
+// Return the user (name) that generated this process
 string Process::User() {
   return LinuxParser::User(Pid());
 }
 
-// TODO: Return the age of this process (in seconds)
+// Return the age of this process (in seconds)
 long int Process::UpTime() {
   return LinuxParser::UpTime(Pid());
 }
