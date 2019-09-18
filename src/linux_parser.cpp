@@ -198,7 +198,6 @@ long LinuxParser::ActiveJiffies(int pid) {
   long stime = stol(values[14]);
   long cutime = stol(values[15]);
   long cstime = stol(values[16]);
-  long starttime = stol(values[21]);
   long total_time = utime + stime + cutime + cstime;
   return total_time;
 }
