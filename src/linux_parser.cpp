@@ -189,6 +189,7 @@ vector<string> LinuxParser::CpuUtilization() {
 long LinuxParser::ActiveJiffies(int pid) {
   string line, token;
   vector<string> values;
+  long total_time{0};
   std::ifstream filestream(kProcDirectory + std::to_string(pid) + kStatFilename);
   if (filestream.is_open()) {
     std::getline(filestream, line);
@@ -197,11 +198,13 @@ long LinuxParser::ActiveJiffies(int pid) {
       values.push_back(token);
     }
   }
-  long utime = stol(values[13]);
-  long stime = stol(values[14]);
-  long cutime = stol(values[15]);
-  long cstime = stol(values[16]);
-  long total_time = utime + stime + cutime + cstime;
+  if (values.size() > 21) {
+    long utime = stol(values[13]);
+    long stime = stol(values[14]);
+    long cutime = stol(values[15]);
+    long cstime = stol(values[16]);
+    total_time = utime + stime + cutime + cstime;
+  }
   return total_time;
 }
 
