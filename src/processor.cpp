@@ -9,7 +9,6 @@ float Processor::Utilization() {
     time_ms = steady_clock::now();
     counter++;
   }
-  float cpu_utilization;
   long active_time = LinuxParser::ActiveJiffies();
   long idle_time = LinuxParser::IdleJiffies();
   long a_time = active_time - cached_active_time;
