@@ -1,6 +1,6 @@
 # System-Monitor
 
-A simple System Monitor program similar to htop (not as sophisticated). 
+An interactive System Monitor process-viewer for Linux. It displays CPU and memory utilization much similar to htop. 
 
 ![System Monitor](images/monitor.png)
 
